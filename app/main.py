@@ -30,7 +30,7 @@ def main():
         # You can use print statements as follows for debugging, they'll be visible when running tests.
         print("Logs from your program will appear here!", file=sys.stderr)
 
-        bencoded_value = command.execute(sys.argv[2:])
+        command.execute(sys.argv[2:])
 
         # json.dumps() can't handle bytes, but bencoded "strings" need to be
         # bytestrings since they might contain non utf-8 characters.
@@ -43,7 +43,7 @@ def main():
             raise TypeError(f"Type not serializable: {type(data)}")
 
         # TODO: Uncomment the code below to pass the first stage
-        print(json.dumps(bencoded_value, default=bytes_to_str))
+        # print(json.dumps(bencoded_value, default=bytes_to_str))
     except Exception as e:
         raise NotImplementedError(f"Unknown command {command}")
 
