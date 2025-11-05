@@ -1,5 +1,7 @@
 import json
 import sys
+from app.factory.CommandFactory import CommandFactory
+from app.strategy.command.CommandStrategy import CommandStrategy
 
 # import bencodepy - available if you need it!
 # import requests - available if you need it!
@@ -19,13 +21,16 @@ def decode_bencode(bencoded_value):
 
 
 def main():
-    command = sys.argv[1]
+    try:
+        command = sys.argv[1]
 
-    # You can use print statements as follows for debugging, they'll be visible when running tests.
-    print("Logs from your program will appear here!", file=sys.stderr)
+        command_factory = CommandFactory()
+        command: CommandStrategy = command_factory.get_command(command)
 
-    if command == "decode":
-        bencoded_value = sys.argv[2].encode()
+        # You can use print statements as follows for debugging, they'll be visible when running tests.
+        print("Logs from your program will appear here!", file=sys.stderr)
+
+        bencoded_value = command.execute(sys.argv[2:])
 
         # json.dumps() can't handle bytes, but bencoded "strings" need to be
         # bytestrings since they might contain non utf-8 characters.
@@ -38,8 +43,8 @@ def main():
             raise TypeError(f"Type not serializable: {type(data)}")
 
         # TODO: Uncomment the code below to pass the first stage
-        print(json.dumps(decode_bencode(bencoded_value), default=bytes_to_str))
-    else:
+        print(json.dumps(bencoded_value, default=bytes_to_str))
+    except Exception as e:
         raise NotImplementedError(f"Unknown command {command}")
 
 
