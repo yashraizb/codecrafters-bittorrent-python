@@ -9,7 +9,10 @@ class DecodeCommand(CommandStrategy):
         self.decode_factory = DecodeFactory()
 
     def execute(self, data: list):
-        parser: ParserStrategy = self.decode_factory.get_parser(data[0])
-        data = parser.parse(data)
-        print(json.dumps(data))
-        # return data
+        try:
+            parser: ParserStrategy = self.decode_factory.get_parser(data[0])
+            data = parser.parse(data)
+            print(json.dumps(data, default=lambda x: x.decode() if isinstance(x, bytes) else x))
+        except Exception as e:
+            print(f"Error during decoding: {e}")
+            print(data)

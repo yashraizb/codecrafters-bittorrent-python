@@ -13,7 +13,7 @@ class DecodeFactory:
     
     def get_parser(self, parser_name):
 
-        parser_name = self.processor.process(parser_name[0])
+        parser_name = self.processor.process(parser_name)
         
         if parser_name in self._mapping:
             return self._mapping[parser_name]()
