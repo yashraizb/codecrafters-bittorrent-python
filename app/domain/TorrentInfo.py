@@ -11,6 +11,7 @@ class TorrentInfo:
         self.infoHash = hashlib.sha1(bencodepy.encode(info.get(b'info'))).hexdigest()
         self.pieceLength = info.get(b'info').get(b'piece length')
         self.pieces = info.get(b'info').get(b'pieces').hex()
+        self.peerId = "APC0001B123456789012"  # Example peer ID
     
     def getTrackerURL(self):
         return self.trackerURL
@@ -18,7 +19,7 @@ class TorrentInfo:
     def getQueryString(self):
         query = {
             "info_hash": hashlib.sha1(bencodepy.encode(self.info.get(b'info'))).digest(),
-            "peer_id": "APC0001B123456789012",
+            "peer_id": self.peerId,
             "port": 6881,
             "uploaded": 0,
             "downloaded": 0,
