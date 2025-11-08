@@ -5,10 +5,6 @@ from app.strategy.torrentBuilder.ReadTorrent import ReadTorrent
 from app.strategy.torrentBuilder.Handshake import Handshake
 from app.strategy.torrentBuilder.FetchPeers import FetchPeers
 from app.strategy.torrentBuilder.Piece import Piece
-from app.domain.HandshakeMessage import HandshakeMessage
-import socket
-import hashlib
-import bencodepy
 
 
 class DownloadPieceCmd(CommandStrategy):
@@ -29,7 +25,7 @@ class DownloadPieceCmd(CommandStrategy):
 
         # Download the piece
         pieceDownload = handShake.operation(
-            Piece(pieceIndex)
+            Piece(pieceIndex, 0, None)
         ).build()
         
         # Write the piece to the file

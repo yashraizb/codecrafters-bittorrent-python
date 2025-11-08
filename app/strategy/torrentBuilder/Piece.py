@@ -1,12 +1,15 @@
 import hashlib
+from queue import Queue
 from app.strategy.torrentBuilder.OperationStrategy import OperationStrategy
 from app.builder.TorrentConnBuilder import TorrentConnBuilder
 
 
 class Piece(OperationStrategy):
 
-    def __init__(self, pieceIndex: int):
+    def __init__(self, pieceIndex: int, connectionIndex: int, queue: Queue):
         self.pieceIndex = pieceIndex
+        self.connectionIndex = connectionIndex
+        self.queue = queue
 
     def recv(self, sock):
         length = sock.recv(4)
@@ -35,7 +38,7 @@ class Piece(OperationStrategy):
             numberOfBlocks += 1
 
         # # Connect to peer
-        sock = builder.verifiedConnections[0][2]
+        sock = builder.verifiedConnections[self.connectionIndex][2]
 
         self.recv(sock)  # Bitfield
         sock.send(b"\x00\x00\x00\x01\x02")
@@ -67,6 +70,9 @@ class Piece(OperationStrategy):
 
         if pieceHash == builder.pieces[self.pieceIndex * 40 : (self.pieceIndex + 1) * 40]:
             builder.parts[self.pieceIndex] = piece
+
+            if self.queue:
+                self.queue.put(self.connectionIndex)
         else:
             print(f"Piece {self.pieceIndex} failed verification.")
 
