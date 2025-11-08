@@ -8,8 +8,9 @@ from app.domain.HandshakeMessage import HandshakeMessage
 
 class Handshake(OperationStrategy):
 
-    def __init__(self, data: list):
+    def __init__(self, data: list, connectionIndex: int = 0):
         self.data = data
+        self.connectionIndex = connectionIndex
 
     def execute(self, builder: TorrentConnBuilder):
         ip, port = self.data[1].split(':')
@@ -23,7 +24,7 @@ class Handshake(OperationStrategy):
         
         sock.send(handshakeMessage)
         response = sock.recv(68)
-        builder.verifiedConnections.append((ip, int(port), sock))
+        builder.verifiedConnections[self.connectionIndex] = (ip, int(port), sock)
         builder.handshakePeerId = response[48:].hex()
 
         return builder

@@ -6,7 +6,6 @@ from app.strategy.torrentBuilder.FetchPeers import FetchPeers
 from app.strategy.torrentBuilder.Handshake import Handshake
 from app.strategy.torrentBuilder.Piece import Piece
 from app.strategy.command.CommandStrategy import CommandStrategy
-from app.domain.TorrentInfo import TorrentInfo
 
 
 class FileDownloadCmd(CommandStrategy):
@@ -15,13 +14,21 @@ class FileDownloadCmd(CommandStrategy):
         self.freeConnections = Queue()
 
     def pieceDownloader(
-        self,
-        builder: TorrentConnBuilder,
-        pieceIndex: int,
-        connectionIndex: int
+        self, builder: TorrentConnBuilder, pieceIndex: int, connectionIndex: int
     ):
+        handshake: TorrentConnBuilder = builder.operation(
+            Handshake(
+                [
+                    None,
+                    f"{builder.peers[connectionIndex][0]}:{builder.peers[connectionIndex][1]}",
+                ],
+                connectionIndex,
+            )
+        )
         # Download the piece
-        builder.operation(Piece(pieceIndex, connectionIndex, self.freeConnections))
+        handshake.operation(Piece(pieceIndex, connectionIndex))
+        builder.verifiedConnections[connectionIndex][2].close()
+        self.freeConnections.put(connectionIndex)
 
     def execute(self, data: list):
         # Fetch peers from the torrent file
@@ -32,18 +39,11 @@ class FileDownloadCmd(CommandStrategy):
         )
 
         for peer in range(len(fetchPeers.peers)):
-            # Perform handshake with the peers
-            fetchPeers: TorrentConnBuilder = fetchPeers.operation(
-                Handshake(
-                    [0, f"{fetchPeers.peers[peer][0]}:{fetchPeers.peers[peer][1]}"]
-                )
-            )
             self.freeConnections.put(peer)
 
-        for pieceIndex in range(fetchPeers.numberOfPieces):
+        print("Number of pieces to download:", fetchPeers.numberOfPieces)
 
-            while self.freeConnections.empty():
-                pass  # Wait for a free connection
+        for pieceIndex in range(fetchPeers.numberOfPieces):
 
             connIndex = self.freeConnections.get()
             self.freeConnections.task_done()
@@ -56,4 +56,11 @@ class FileDownloadCmd(CommandStrategy):
         while self.freeConnections.qsize() < 3:
             pass  # Wait for all connections to be free
 
+        final = fetchPeers.build()
+
         # Write the pieces to the file
+        with open(data[1], "wb") as file:
+            for piece in final.parts:
+                file.write(piece)
+
+        print(f"Downloaded file to {data[1]}")

@@ -1,6 +1,3 @@
-import bencodepy
-import hashlib
-import requests
 from urllib.parse import urlencode
 from app.domain.TorrentInfo import TorrentInfo
 from app.strategy.torrentBuilder.OperationStrategy import OperationStrategy
@@ -20,7 +17,7 @@ class TorrentConnBuilder:
         self.queryString = None
         self.handshakePeerId = None
         self.infoHash20Bytes = None
-        self.verifiedConnections = []
+        self.verifiedConnections = [0]
         self.parts = []
         self.numberOfPieces = 0
     

@@ -10,11 +10,10 @@ class HandshakeCommand(CommandStrategy):
 
         torrentInfo: TorrentInfo = TorrentConnBuilder().\
             operation(ReadTorrent(data)).\
-            operation(Handshake(data)).\
+            operation(Handshake(data, 0)).\
             build()
         
         torrentInfo.printHandshakePeerId()
 
-        for conn in torrentInfo.verifiedConnections:
-            conn[2].close()
+        torrentInfo.verifiedConnections[0][2].close()  # Close the connection after handshake
         

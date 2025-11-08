@@ -22,5 +22,5 @@ class ReadTorrent(OperationStrategy):
         ).digest()
         builder.numberOfPieces = len(builder.info.get(b"info").get(b"pieces")) // 20
         builder.parts = [i for i in range(builder.numberOfPieces)]
-        # builder.peerId = "APC0001B123456789012"  # Example peer ID
+
         return builder

@@ -6,7 +6,6 @@ class DictStrategy(ParserStrategy):
 
     def recursiveParser(self, d):
         temp = {}
-        # print(d)
         for key in d:
             if isinstance(d[key], dict):
                 temp[key.decode()] = self.recursiveParser(d[key])
@@ -29,5 +28,4 @@ class DictStrategy(ParserStrategy):
 
     def parse(self, data):
         data: dict = self.recursiveParser(bencodepy.decode(data[0]))
-        # print(data)
         return data

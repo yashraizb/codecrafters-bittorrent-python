@@ -1,15 +1,13 @@
 import hashlib
-from queue import Queue
 from app.strategy.torrentBuilder.OperationStrategy import OperationStrategy
 from app.builder.TorrentConnBuilder import TorrentConnBuilder
 
 
 class Piece(OperationStrategy):
 
-    def __init__(self, pieceIndex: int, connectionIndex: int, queue: Queue):
+    def __init__(self, pieceIndex: int, connectionIndex: int):
         self.pieceIndex = pieceIndex
         self.connectionIndex = connectionIndex
-        self.queue = queue
 
     def recv(self, sock):
         length = sock.recv(4)
@@ -20,7 +18,6 @@ class Piece(OperationStrategy):
         while len(message) < int.from_bytes(length):
             message += sock.recv(int.from_bytes(length) - len(message))
 
-        # print("Received message:", len(length + message))
         return message
 
     def execute(self, builder: TorrentConnBuilder):
@@ -58,21 +55,16 @@ class Piece(OperationStrategy):
                 + blockLength.to_bytes(4, byteorder="big")
             )
             sock.send(request)
-            # print(f"Sent request for piece {pieceIndex}, begin {begin}, length {blockLength}")
 
             # Receive piece
             response = self.recv(sock)
-
-            # print(f"Received piece {data}")
             piece += response[9:]  # Skip the message ID and piece index/begin
 
         pieceHash = hashlib.sha1(piece).hexdigest()
 
         if pieceHash == builder.pieces[self.pieceIndex * 40 : (self.pieceIndex + 1) * 40]:
             builder.parts[self.pieceIndex] = piece
-
-            if self.queue:
-                self.queue.put(self.connectionIndex)
+            print(f"Piece {self.pieceIndex} verified successfully.")
         else:
             print(f"Piece {self.pieceIndex} failed verification.")
 
