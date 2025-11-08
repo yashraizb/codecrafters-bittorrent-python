@@ -8,7 +8,7 @@ class InfoCommand(CommandStrategy):
 
     def execute(self, data: list):
         torrentInfo: TorrentInfo = TorrentConnBuilder().\
-            operation(ReadTorrent(), data).\
+            operation(ReadTorrent(data)).\
             build()
         torrentInfo.printInfo()
         

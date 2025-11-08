@@ -4,8 +4,24 @@ from urllib.parse import urlencode
 
 
 class TorrentInfo:
-    def __init__(self, info, trackerURL, length, infoHash, pieceLength, pieces, peerId, queryString, peers, handshakePeerId):
-        self.info:dict = info
+    def __init__(
+        self,
+        info,
+        trackerURL,
+        length,
+        infoHash,
+        pieceLength,
+        pieces,
+        peerId,
+        queryString,
+        peers,
+        handshakePeerId,
+        infoHash20Bytes,
+        verifiedConnections,
+        parts,
+        numberOfPieces
+    ):
+        self.info: dict = info
         self.trackerURL = trackerURL
         self.length = length
         self.infoHash = infoHash
@@ -15,14 +31,18 @@ class TorrentInfo:
         self.queryString = queryString
         self.peers = peers
         self.handshakePeerId = handshakePeerId
-    
+        self.infoHash20Bytes = infoHash20Bytes
+        self.verifiedConnections = verifiedConnections
+        self.parts = parts
+        self.numberOfPieces = numberOfPieces
+
     def getTrackerURL(self):
         return self.trackerURL
-    
+
     def printPeers(self):
         for ip, port in self.peers:
             print(f"{ip}:{port}")
-    
+
     def printInfo(self):
         print("Tracker URL:", self.trackerURL)
         print("Length:", self.length)
@@ -30,8 +50,8 @@ class TorrentInfo:
         print("Piece Length:", self.pieceLength)
         print("Pieces: ")
         for i in range(0, len(self.pieces), 40):
-            piece_hash = self.pieces[i: i + 40]
+            piece_hash = self.pieces[i : i + 40]
             print(f"{piece_hash}")
-    
+
     def printHandshakePeerId(self):
         print("Handshake Peer ID:", self.handshakePeerId)

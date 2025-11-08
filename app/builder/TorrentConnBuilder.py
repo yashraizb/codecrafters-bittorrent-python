@@ -19,6 +19,10 @@ class TorrentConnBuilder:
         self.peers = []
         self.queryString = None
         self.handshakePeerId = None
+        self.infoHash20Bytes = None
+        self.verifiedConnections = []
+        self.parts = []
+        self.numberOfPieces = 0
     
     def operation(self, operationStrategy: OperationStrategy):
         operationStrategy.execute(self)
@@ -35,5 +39,9 @@ class TorrentConnBuilder:
             self.peerId, 
             self.queryString, 
             self.peers, 
-            self.handshakePeerId
+            self.handshakePeerId,
+            self.infoHash20Bytes,
+            self.verifiedConnections,
+            self.parts,
+            self.numberOfPieces
         )

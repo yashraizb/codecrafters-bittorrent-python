@@ -3,7 +3,7 @@ from app.strategy.command.DecodeCommand import DecodeCommand
 from app.strategy.command.InfoCommand import InfoCommand
 from app.strategy.command.PeersCommand import PeersCommand
 from app.strategy.command.HandshakeCommand import HandshakeCommand
-from app.strategy.command.DownloadPiece import DownloadPiece
+from app.strategy.command.DownloadPieceCmd import DownloadPieceCmd
 
 
 class CommandType(Enum):
@@ -11,4 +11,4 @@ class CommandType(Enum):
     INFO = ("info", InfoCommand)
     PEERS = ("peers", PeersCommand)
     HANDSHAKE = ("handshake", HandshakeCommand)
-    DOWNLOAD = ("download_piece", DownloadPiece)
+    DOWNLOAD = ("download_piece", DownloadPieceCmd)

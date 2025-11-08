@@ -14,4 +14,7 @@ class HandshakeCommand(CommandStrategy):
             build()
         
         torrentInfo.printHandshakePeerId()
+
+        for conn in torrentInfo.verifiedConnections:
+            conn[2].close()
         

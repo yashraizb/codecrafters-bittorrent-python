@@ -23,7 +23,7 @@ class Handshake(OperationStrategy):
         
         sock.send(handshakeMessage)
         response = sock.recv(68)
-        sock.close()
+        builder.verifiedConnections.append((ip, int(port), sock))
         builder.handshakePeerId = response[48:].hex()
 
         return builder
