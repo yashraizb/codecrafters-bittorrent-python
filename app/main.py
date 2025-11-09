@@ -1,4 +1,3 @@
-import json
 import sys
 from app.factory.CommandFactory import CommandFactory
 from app.strategy.command.CommandStrategy import CommandStrategy

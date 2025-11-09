@@ -5,6 +5,7 @@ from app.strategy.command.PeersCommand import PeersCommand
 from app.strategy.command.HandshakeCommand import HandshakeCommand
 from app.strategy.command.DownloadPieceCmd import DownloadPieceCmd
 from app.strategy.command.FileDownloadCmd import FileDownloadCmd
+from app.strategy.command.MagnetParse import MagnetParse
 
 
 class CommandType(Enum):
@@ -14,3 +15,4 @@ class CommandType(Enum):
     HANDSHAKE = ("handshake", HandshakeCommand)
     PIECE_DOWNLOAD = ("download_piece", DownloadPieceCmd)
     FILE_DOWNLOAD = ("download", FileDownloadCmd)
+    MAGNET_PARSE = ("magnet_parse", MagnetParse)
