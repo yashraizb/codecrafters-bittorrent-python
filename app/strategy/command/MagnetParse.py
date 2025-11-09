@@ -1,3 +1,4 @@
+from urllib.parse import unquote
 from app.strategy.command.CommandStrategy import CommandStrategy
 
 
@@ -6,8 +7,6 @@ class MagnetParse(CommandStrategy):
         details = {}
         temp = ""
         key = ""
-
-        print(data[0])
 
         for char in data[0]:
             temp += char
@@ -21,11 +20,7 @@ class MagnetParse(CommandStrategy):
                 temp = ""
                 key = ""
         
-        details[key] = temp[:-1]  # Add the last key-value pair
+        details[key] = temp  # Add the last key-value pair
         
-        print(details)
-
-    def _extract_bencoded_value(self, magnet_link):
-        # This is a placeholder for the actual extraction logic
-        # In a real implementation, you would parse the magnet link
-        return b"5:hello"
+        print("Tracker URL:", unquote(details["tr"]))
+        print("Info Hash:", details["xt"].rsplit(":")[-1])
