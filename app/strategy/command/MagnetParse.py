@@ -1,26 +1,14 @@
 from urllib.parse import unquote
 from app.strategy.command.CommandStrategy import CommandStrategy
+from app.builder.MagnetBuilder import MagnetBuilder
+from app.strategy.magnetBuilder.ExtractInfo import ExtractInfo
+from app.domain.Magnet import Magnet
 
 
 class MagnetParse(CommandStrategy):
     def execute(self, data: list):
-        details = {}
-        temp = ""
-        key = ""
+        magnetInfo: Magnet = MagnetBuilder().operation(
+            ExtractInfo(data)
+        ).build()
 
-        for char in data[0]:
-            temp += char
-            if char == '?':
-                temp = ""
-            elif char == '=':
-                key = temp[:-1]
-                temp = ""
-            elif char == '&':
-                details[key] = temp[:-1]
-                temp = ""
-                key = ""
-        
-        details[key] = temp  # Add the last key-value pair
-        
-        print("Tracker URL:", unquote(details["tr"]))
-        print("Info Hash:", details["xt"].rsplit(":")[-1])
+        magnetInfo.printParsedData()

@@ -1,6 +1,7 @@
 import hashlib
 import bencodepy
 from app.strategy.torrentBuilder.OperationStrategy import OperationStrategy
+from app.builder.TorrentConnBuilder import TorrentConnBuilder
 
 
 class ReadTorrent(OperationStrategy):
@@ -8,7 +9,7 @@ class ReadTorrent(OperationStrategy):
     def __init__(self, data: list):
         self.data = data
 
-    def execute(self, builder):
+    def execute(self, builder: TorrentConnBuilder):
         builder.info = bencodepy.Bencode().read(self.data[0])
         builder.trackerURL = builder.info.get(b"announce").decode()
         builder.length = builder.info.get(b"info").get(b"length")
