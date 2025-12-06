@@ -11,6 +11,7 @@ class MagnetBuilder:
         self.queryString = None
         self.peers = []
         self.handshakePeerId = None
+        self.metadataExtensionId = None
 
     def operation(self, operationStrategy: OperationStrategy):
         operationStrategy.execute(self)
@@ -25,4 +26,5 @@ class MagnetBuilder:
             self.queryString,
             self.peers,
             self.handshakePeerId,
+            self.metadataExtensionId
         )

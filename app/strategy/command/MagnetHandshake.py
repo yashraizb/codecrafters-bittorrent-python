@@ -16,5 +16,5 @@ class MagnetHandshake(CommandStrategy):
         operation(MgntHandshake()).build()
 
         print("Peer ID:", magnetInfo.handshakePeerId)
-
+        print("Peer Metadata Extension ID:", magnetInfo.metadataExtensionId)
         

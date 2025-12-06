@@ -8,7 +8,8 @@ class Magnet:
         peerId: str,
         queryString: dict,
         peers: list,
-        handshakePeerId: str
+        handshakePeerId: str,
+        metadataExtensionId: str
     ):
         self.infoHash = infoHash
         self.name = name
@@ -17,6 +18,7 @@ class Magnet:
         self.queryString = queryString
         self.peers = peers
         self.handshakePeerId = handshakePeerId
+        self.metadataExtensionId = metadataExtensionId
 
     def printParsedData(self):
         print("Tracker URL:", self.trackerURL)
