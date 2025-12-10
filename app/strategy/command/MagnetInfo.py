@@ -19,3 +19,10 @@ class MagnetInfo(CommandStrategy):
         )
 
         magnetInfo.sock.close()
+        print("Tracker URL:", magnetInfo.trackerURL)
+        print("Length:", magnetInfo.length)
+        print("Info Hash:", magnetInfo.infoHash)
+        print("Piece Length:", magnetInfo.pieceLength)  # Example calculation
+        print("Pieces:")
+        for piece in magnetInfo.pieces:
+            print(piece)

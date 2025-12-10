@@ -13,6 +13,9 @@ class MagnetBuilder:
         self.handshakePeerId = None
         self.metadataExtensionId = None
         self.sock = None
+        self.length = 0
+        self.pieceLength = 0
+        self.pieces = []
 
     def operation(self, operationStrategy: OperationStrategy):
         operationStrategy.execute(self)
@@ -28,5 +31,8 @@ class MagnetBuilder:
             self.peers,
             self.handshakePeerId,
             self.metadataExtensionId,
-            self.sock
+            self.sock,
+            self.length,
+            self.pieceLength,
+            self.pieces
         )

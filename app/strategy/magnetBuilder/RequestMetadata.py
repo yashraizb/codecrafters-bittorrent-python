@@ -21,4 +21,24 @@ class RequestMetadata(OperationStrategy):
         sent_length = (1 + 1 + len(metadataDict)).to_bytes(4, byteorder="big")
         builder.sock.send(sent_length + message_id + extension_message_id + metadataDict)
 
+        # Receive metadata size
+        length = builder.sock.recv(4)
+        while not length or not int.from_bytes(length):
+            length = builder.sock.recv(4)
+
+        message = builder.sock.recv(int.from_bytes(length))
+        while len(message) < int.from_bytes(length):
+            message += builder.sock.recv(int.from_bytes(length) - len(message))
+        
+        message = bencodepy.decode(b'l' + message[2:] + b'e')
+
+        # print(message)
+
+        builder.length = message[1][b'length']
+        builder.pieceLength = message[1][b'piece length']
+        pieces = message[1][b'pieces']
+
+        for i in range(0, len(pieces), 20):
+            builder.pieces.append(pieces[i:i+20].hex())
+
         return builder
