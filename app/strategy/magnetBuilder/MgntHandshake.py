@@ -48,4 +48,5 @@ class MgntHandshake(OperationStrategy):
 
             builder.metadataExtensionId = metadata_extension_id
 
+        builder.sock = sock
         return builder

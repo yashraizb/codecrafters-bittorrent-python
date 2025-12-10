@@ -15,6 +15,8 @@ class MagnetHandshake(CommandStrategy):
         ).\
         operation(MgntHandshake()).build()
 
+        magnetInfo.sock.close()  # Close the socket after handshake
+
         print("Peer ID:", magnetInfo.handshakePeerId)
         print("Peer Metadata Extension ID:", magnetInfo.metadataExtensionId)
         

@@ -7,6 +7,7 @@ from app.strategy.command.DownloadPieceCmd import DownloadPieceCmd
 from app.strategy.command.FileDownloadCmd import FileDownloadCmd
 from app.strategy.command.MagnetParse import MagnetParse
 from app.strategy.command.MagnetHandshake import MagnetHandshake
+from app.strategy.command.MagnetInfo import MagnetInfo
 
 
 class CommandType(Enum):
@@ -18,3 +19,4 @@ class CommandType(Enum):
     FILE_DOWNLOAD = ("download", FileDownloadCmd)
     MAGNET_PARSE = ("magnet_parse", MagnetParse)
     MAGNET_HANDSHAKE = ("magnet_handshake", MagnetHandshake)
+    MAGNET_INFO = ("magnet_info", MagnetInfo)
