@@ -33,3 +33,7 @@ class GetPeers(OperationStrategy):
             ip = ".".join(str(b) for b in peers[i:i+4])
             port = int.from_bytes(peers[i+4:i+6], byteorder='big')
             builder.peers.append((ip, port))
+        
+        builder.verifiedConnections = [i for i in range(len(builder.peers))]
+        
+        return builder

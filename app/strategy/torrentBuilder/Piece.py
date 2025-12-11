@@ -1,4 +1,5 @@
 import hashlib
+import socket
 from app.strategy.torrentBuilder.OperationStrategy import OperationStrategy
 from app.builder.TorrentConnBuilder import TorrentConnBuilder
 
@@ -35,11 +36,11 @@ class Piece(OperationStrategy):
             numberOfBlocks += 1
 
         # # Connect to peer
-        sock = builder.verifiedConnections[self.connectionIndex][2]
+        sock: socket.socket = builder.verifiedConnections[self.connectionIndex][2]
 
-        self.recv(sock)  # Bitfield
+        print("Bitfield:", self.recv(sock))  # Bitfield
         sock.send(b"\x00\x00\x00\x01\x02")
-        self.recv(sock)  # Unchoke
+        print("Unchoke:", self.recv(sock))  # Unchoke
 
         piece = b""
 
@@ -55,10 +56,13 @@ class Piece(OperationStrategy):
                 + blockLength.to_bytes(4, byteorder="big")
             )
             sock.send(request)
+            print("sent request for block", i + 1, "/", numberOfBlocks, "for piece", self.pieceIndex)
 
             # Receive piece
             response = self.recv(sock)
+            print("Response", response[:9])
             piece += response[9:]  # Skip the message ID and piece index/begin
+            print(f"Received block {i + 1}/{numberOfBlocks} for piece {self.pieceIndex}")
 
         pieceHash = hashlib.sha1(piece).hexdigest()
 
@@ -67,5 +71,9 @@ class Piece(OperationStrategy):
             print(f"Piece {self.pieceIndex} verified successfully.")
         else:
             print(f"Piece {self.pieceIndex} failed verification.")
+        
+        builder.verifiedConnections[self.connectionIndex][2].close()
+        
+        return builder
 
 

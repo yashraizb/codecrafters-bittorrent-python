@@ -30,3 +30,5 @@ class ExtractInfo(OperationStrategy):
         builder.infoHash = details["xt"].rsplit(":")[-1]
         builder.name = details["dn"]
         builder.trackerURL = unquote(details["tr"])
+        
+        return builder

@@ -15,7 +15,11 @@ class Magnet:
         sock: socket.socket,
         length: int,
         pieceLength: int,
-        pieces: list
+        pieces: list,
+        numberOfPieces: int,
+        verifiedConnections: list,
+        info: dict,
+        parts: list
     ):
         self.infoHash = infoHash
         self.name = name
@@ -29,6 +33,10 @@ class Magnet:
         self.length = length
         self.pieceLength = pieceLength
         self.pieces = pieces
+        self.numberOfPieces = numberOfPieces
+        self.verifiedConnections = verifiedConnections
+        self.info = info
+        self.parts = parts
 
 
     def printParsedData(self):

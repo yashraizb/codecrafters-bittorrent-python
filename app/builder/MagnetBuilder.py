@@ -15,7 +15,11 @@ class MagnetBuilder:
         self.sock = None
         self.length = 0
         self.pieceLength = 0
-        self.pieces = []
+        self.pieces = None
+        self.numberOfPieces = 0
+        self.verifiedConnections = [0]
+        self.info = None
+        self.parts = []
 
     def operation(self, operationStrategy: OperationStrategy):
         operationStrategy.execute(self)
@@ -34,5 +38,9 @@ class MagnetBuilder:
             self.sock,
             self.length,
             self.pieceLength,
-            self.pieces
+            self.pieces,
+            self.numberOfPieces,
+            self.verifiedConnections,
+            self.info,
+            self.parts
         )

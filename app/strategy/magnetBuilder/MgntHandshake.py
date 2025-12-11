@@ -6,12 +6,17 @@ from app.domain.HandshakeMessage import HandshakeMessage
 
 
 class MgntHandshake(OperationStrategy):
+    def __init__(self, connectionIndex: int):
+        self.connectionIndex = connectionIndex
 
     def execute(self, builder: MagnetBuilder):
-        ip, port = builder.peers[0]
+        ip, port = builder.peers[self.connectionIndex]
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((ip, int(port)))
+
+        builder.verifiedConnections[self.connectionIndex] = (ip, int(port), sock)
+
         infoHash = bytes.fromhex(builder.infoHash)
         peerId = builder.peerId.encode()
 
@@ -24,9 +29,11 @@ class MgntHandshake(OperationStrategy):
         sock.send(handshakeMessageBytes)
         response = sock.recv(68)
         builder.handshakePeerId = response[48:].hex()
+        # print(response[25:26])
 
         # If the peer supports extension protocol, send extended handshake request
-        if response[20:28] == b'\x00\x00\x00\x00\x00\x10\x00\x00':
+        if response[25:26] == b'\x10':
+
             extensions = bencodepy.encode({"m": {"ut_metadata": 1}})
             message_id = (20).to_bytes(1, byteorder="big")
             extension_message_id = (0).to_bytes(1, "big")

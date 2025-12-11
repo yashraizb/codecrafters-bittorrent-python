@@ -24,5 +24,5 @@ class MagnetInfo(CommandStrategy):
         print("Info Hash:", magnetInfo.infoHash)
         print("Piece Length:", magnetInfo.pieceLength)  # Example calculation
         print("Pieces:")
-        for piece in magnetInfo.pieces:
-            print(piece)
+        for i in range(0, len(magnetInfo.pieces), 40):
+            print(magnetInfo.pieces[i:i+40])
