@@ -38,7 +38,7 @@ class RequestMetadata(OperationStrategy):
         builder.pieceLength = message[1][b'piece length']
         builder.pieces = message[1][b'pieces'].hex()
         
-        builder.numberOfPieces = len(builder.pieces)
+        builder.numberOfPieces = len(message[1][b'pieces']) // 20
         builder.parts = [i for i in range(builder.numberOfPieces)]
 
         return builder

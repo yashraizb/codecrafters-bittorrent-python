@@ -13,8 +13,8 @@ class MagnetInfo(CommandStrategy):
             MagnetBuilder()
             .operation(ExtractInfo(data))
             .operation(GetPeers(data))
-            .operation(MgntHandshake())
-            .operation(RequestMetadata())
+            .operation(MgntHandshake(0))
+            .operation(RequestMetadata(0))
             .build()
         )
 

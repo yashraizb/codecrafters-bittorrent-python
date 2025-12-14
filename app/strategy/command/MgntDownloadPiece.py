@@ -22,8 +22,6 @@ class MgntDownloadPiece(CommandStrategy):
 
         magnetInfo.verifiedConnections[0][2].close()  # Close the connection after metadata request
 
-        print("Requested data received. Proceeding to download piece index", pieceIndex)
-
         handShake = (magnetInfo
         .operation(
             Handshake([0, f"{magnetInfo.peers[0][0]}:{magnetInfo.peers[0][1]}"], 0)

@@ -13,7 +13,7 @@ class MagnetHandshake(CommandStrategy):
         ).operation(
             GetPeers(data)
         ).\
-        operation(MgntHandshake()).build()
+        operation(MgntHandshake(0)).build()
 
         magnetInfo.sock.close()  # Close the socket after handshake
 

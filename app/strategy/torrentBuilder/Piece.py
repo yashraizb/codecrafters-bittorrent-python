@@ -38,9 +38,9 @@ class Piece(OperationStrategy):
         # # Connect to peer
         sock: socket.socket = builder.verifiedConnections[self.connectionIndex][2]
 
-        print("Bitfield:", self.recv(sock))  # Bitfield
+        self.recv(sock)
         sock.send(b"\x00\x00\x00\x01\x02")
-        print("Unchoke:", self.recv(sock))  # Unchoke
+        self.recv(sock)
 
         piece = b""
 
@@ -56,13 +56,10 @@ class Piece(OperationStrategy):
                 + blockLength.to_bytes(4, byteorder="big")
             )
             sock.send(request)
-            print("sent request for block", i + 1, "/", numberOfBlocks, "for piece", self.pieceIndex)
 
             # Receive piece
             response = self.recv(sock)
-            print("Response", response[:9])
             piece += response[9:]  # Skip the message ID and piece index/begin
-            print(f"Received block {i + 1}/{numberOfBlocks} for piece {self.pieceIndex}")
 
         pieceHash = hashlib.sha1(piece).hexdigest()
 
