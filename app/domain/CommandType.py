@@ -9,6 +9,7 @@ from app.strategy.command.MagnetParse import MagnetParse
 from app.strategy.command.MagnetHandshake import MagnetHandshake
 from app.strategy.command.MagnetInfo import MagnetInfo
 from app.strategy.command.MgntDownloadPiece import MgntDownloadPiece
+from app.strategy.command.MgntDownloadFile import MgntDownloadFile
 
 
 class CommandType(Enum):
@@ -22,3 +23,4 @@ class CommandType(Enum):
     MAGNET_HANDSHAKE = ("magnet_handshake", MagnetHandshake)
     MAGNET_INFO = ("magnet_info", MagnetInfo)
     MAGNT_PIECE_DOWNLOAD = ("magnet_download_piece", MgntDownloadPiece)
+    MAGNT_FILE_DOWNLOAD = ("magnet_download", MgntDownloadFile)
